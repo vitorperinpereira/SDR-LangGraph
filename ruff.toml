@@ -1,0 +1,7 @@
+exclude = [".agent", ".tmp", "build", "dist"]
+
+[lint]
+# Add Specific lint rules here if needed
+
+[format]
+# Add Specific format rules here if needed

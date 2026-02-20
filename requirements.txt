@@ -1,0 +1,16 @@
+fastapi
+uvicorn
+python-multipart
+pydantic-settings
+langgraph
+langchain
+langchain-openai
+supabase
+google-api-python-client
+google-auth
+python-dotenv
+requests
+httpx
+redis
+pytest
+ruff
