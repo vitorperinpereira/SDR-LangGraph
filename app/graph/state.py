@@ -11,6 +11,11 @@ InteresseLiteral = Literal["muito_interesse", "medio_interesse", "baixo_interess
 class GraphState(TypedDict, total=False):
     clinic_id: str
     thread_id: str
+    use_llm_nodes: bool
+    prompt_profile: str
+    source_label: str
+    last_agent_goal: str
+    last_user_intent_raw: str
     stage: StageLiteral
     lead_status: str
     intent: IntentLiteral

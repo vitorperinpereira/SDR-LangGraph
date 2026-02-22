@@ -65,7 +65,6 @@ def _monkeypatch_common_dependencies(monkeypatch):
     monkeypatch.setattr(main.evolution_service, "mark_as_read", fake_mark_as_read)
     monkeypatch.setattr(main.evolution_service, "send_presence", fake_send_presence)
     monkeypatch.setattr(main.gcal_service, "create_event", fake_create_event)
-    monkeypatch.setattr(main.sheets_service, "sync_followup", fake_sync_followup)
     monkeypatch.setattr(main.audio_service, "transcribe", fake_transcribe)
     monkeypatch.setattr(main.redis_service, "acquire_debounce_lock", fake_acquire_debounce_lock)
 
@@ -155,7 +154,6 @@ def test_api_webhook_supports_audio_and_sheets_sync(monkeypatch):
     monkeypatch.setattr(main.audio_service, "transcribe", fake_transcribe)
     monkeypatch.setattr(main.app_graph, "ainvoke", fake_ainvoke)
     monkeypatch.setattr(main.db_service, "save_followup", fake_save_followup)
-    monkeypatch.setattr(main.sheets_service, "sync_followup", fake_sync_followup)
 
     client = TestClient(main.app)
     payload = {
@@ -170,7 +168,6 @@ def test_api_webhook_supports_audio_and_sheets_sync(monkeypatch):
     assert response.status_code == 200
     assert response.json()["status"] == "processed"
     assert captured["transcribed"] is True
-    assert captured["sheet_synced"] is True
     assert captured["followup"] is not None
     assert captured["followup"]["interesse"] == "muito_interesse"
 

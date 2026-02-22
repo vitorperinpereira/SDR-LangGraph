@@ -13,4 +13,6 @@ requests
 httpx
 redis
 pytest
+pytest-asyncio
+langchain-text-splitters
 ruff

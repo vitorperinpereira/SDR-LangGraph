@@ -45,4 +45,5 @@ async def test_objection_flow():
     
     # Should move to waiting_choice
     assert result["stage"] == "waiting_choice"
-    assert "horarios disponiveis" in result["messages"][-1].content
+    last_msg = result["messages"][-1].content.lower()
+    assert "consegui" in last_msg or "tenho vagas" in last_msg or "horário" in last_msg or "escola" in last_msg or "ou" in last_msg

@@ -1,0 +1,535 @@
+[
+  {
+    "block": "Bloco 1 - Lead Quente",
+    "thread_id": "4a908cf5-3ad1-4d53-a56b-5918eb0ec030",
+    "turn": 1,
+    "user_input": "Quero marcar avaliação.",
+    "intent_detected": "agendamento",
+    "route_decision": "collect_preferences",
+    "tools_called": [],
+    "final_response": "Boa. Você prefere manhã ou tarde? Tem algum dia da semana que fica melhor pra você?",
+    "goal_reached": false,
+    "lead_stage": "collect_preferences",
+    "score_breakdown": {
+      "direcionamento": 5,
+      "perguntas_estrategicas": 3,
+      "controle_conversa": 5,
+      "naturalidade": 4,
+      "regras": 5
+    },
+    "score": 22
+  },
+  {
+    "block": "Bloco 1 - Lead Quente",
+    "thread_id": "76aac6d3-ea44-4666-9cd1-feff6dcea2fb",
+    "turn": 1,
+    "user_input": "Vocês fazem implante?",
+    "intent_detected": "qualify",
+    "route_decision": "qualify",
+    "tools_called": [],
+    "final_response": "Entendo — implante é uma solução importante e merece avaliação presencial. Posso verificar disponibilidade para agendamento. Qual é o seu nome?",
+    "goal_reached": false,
+    "lead_stage": "qualify",
+    "score_breakdown": {
+      "direcionamento": 5,
+      "perguntas_estrategicas": 1,
+      "controle_conversa": 5,
+      "naturalidade": 5,
+      "regras": 5
+    },
+    "score": 21
+  },
+  {
+    "block": "Bloco 1 - Lead Quente",
+    "thread_id": "6868b55a-ae4b-4a25-a48d-3d422a63b8e0",
+    "turn": 1,
+    "user_input": "Quero saber valor de aparelho.",
+    "intent_detected": "comercial",
+    "route_decision": "qualify",
+    "tools_called": [
+      "kb_gmv",
+      "kb_has_context"
+    ],
+    "final_response": "Oi, sou a Athena do GMV.\nEntendo que preço é importante; não encontrei informações de valor na nossa base.\nPara te passar uma estimativa, qual aparelho você busca e para quantas unidades?\nSe preferir, marcamos um diagnóstico rápido por chamada para eu já preparar uma proposta.",
+    "goal_reached": false,
+    "lead_stage": "qualify",
+    "score_breakdown": {
+      "direcionamento": 5,
+      "perguntas_estrategicas": 5,
+      "controle_conversa": 5,
+      "naturalidade": 5,
+      "regras": 5
+    },
+    "score": 25
+  },
+  {
+    "block": "Bloco 1 - Lead Quente",
+    "thread_id": "7179afd0-6d91-4d3f-b96e-a25cc4e8a0ba",
+    "turn": 1,
+    "user_input": "Tem horário amanhã?",
+    "intent_detected": "agendamento",
+    "route_decision": "collect_preferences",
+    "tools_called": [],
+    "final_response": "Boa. Você prefere manhã ou tarde? Tem algum dia da semana que fica melhor pra você?",
+    "goal_reached": false,
+    "lead_stage": "collect_preferences",
+    "score_breakdown": {
+      "direcionamento": 4,
+      "perguntas_estrategicas": 4,
+      "controle_conversa": 3,
+      "naturalidade": 4,
+      "regras": 5
+    },
+    "score": 20
+  },
+  {
+    "block": "Bloco 1 - Lead Quente",
+    "thread_id": "e85ce030-d3e5-4a14-aa9f-4c927ed0f178",
+    "turn": 1,
+    "user_input": "Vi no Instagram e me interessei.",
+    "intent_detected": "qualify",
+    "route_decision": "qualify",
+    "tools_called": [],
+    "final_response": "Que bom que nos viu no Instagram — fico feliz que tenha se interessado!  \nO que chamou sua atenção?",
+    "goal_reached": false,
+    "lead_stage": "qualify",
+    "score_breakdown": {
+      "direcionamento": 3,
+      "perguntas_estrategicas": 2,
+      "controle_conversa": 3,
+      "naturalidade": 4,
+      "regras": 5
+    },
+    "score": 17
+  },
+  {
+    "block": "Bloco 2 - Lead Curioso",
+    "thread_id": "8106063c-9f95-4cab-b0c0-c980633b2b36",
+    "turn": 1,
+    "user_input": "Quanto é?",
+    "intent_detected": "comercial",
+    "route_decision": "qualify",
+    "tools_called": [
+      "kb_gmv",
+      "kb_has_context"
+    ],
+    "final_response": "Oi! Obrigada por perguntar.\nNo momento não encontrei informações de preço na minha base.\nO valor varia conforme a solução e o escopo — preciso entender seu caso para te passar opções e faixas.\nPosso agendar uma call rápida de 15 minutos, sem compromisso, para te apresentar um orçamento claro?",
+    "goal_reached": false,
+    "lead_stage": "qualify",
+    "score_breakdown": {
+      "direcionamento": 5,
+      "perguntas_estrategicas": 1,
+      "controle_conversa": 5,
+      "naturalidade": 5,
+      "regras": 5
+    },
+    "score": 21
+  },
+  {
+    "block": "Bloco 2 - Lead Curioso",
+    "thread_id": "eda5e4f1-1d40-4bb7-899f-4a9f63bf1485",
+    "turn": 1,
+    "user_input": "Quanto custa implante?",
+    "intent_detected": "comercial",
+    "route_decision": "qualify",
+    "tools_called": [
+      "kb_gmv",
+      "kb_has_context"
+    ],
+    "final_response": "Oi! Sei que custo é uma dúvida importante.\nNão encontrei informações de preço na minha base e o valor varia conforme caso, material e exames necessários.\nPosso agendar um diagnóstico curto e sem compromisso para avaliar e te passar um orçamento personalizado.\nQuando prefere: chamada rápida ou prefere responder por mensagem?",
+    "goal_reached": false,
+    "lead_stage": "qualify",
+    "score_breakdown": {
+      "direcionamento": 5,
+      "perguntas_estrategicas": 1,
+      "controle_conversa": 4,
+      "naturalidade": 5,
+      "regras": 5
+    },
+    "score": 20
+  },
+  {
+    "block": "Bloco 2 - Lead Curioso",
+    "thread_id": "7dd356b3-249c-4d14-9c8f-cd6cb53994dd",
+    "turn": 1,
+    "user_input": "É muito caro?",
+    "intent_detected": "agendamento",
+    "route_decision": "collect_preferences",
+    "tools_called": [
+      "kb_gmv",
+      "kb_has_context"
+    ],
+    "final_response": "Entendo a questao financeira. Temos formas de pagamento e parcelamento facilitado. Podemos seguir para te mostrar os melhores horarios? Se quiser, eu ja te mostro horarios para avaliacao sem compromisso.",
+    "goal_reached": false,
+    "lead_stage": "collect_preferences",
+    "score_breakdown": {
+      "direcionamento": 5,
+      "perguntas_estrategicas": 1,
+      "controle_conversa": 4,
+      "naturalidade": 4,
+      "regras": 5
+    },
+    "score": 19
+  },
+  {
+    "block": "Bloco 2 - Lead Curioso",
+    "thread_id": "5e1ce5c4-6e07-4317-bfc2-668d6456132a",
+    "turn": 1,
+    "user_input": "Tem desconto?",
+    "intent_detected": "comercial",
+    "route_decision": "qualify",
+    "tools_called": [
+      "kb_gmv",
+      "kb_has_context"
+    ],
+    "final_response": "Ótima pergunta. No momento não tenho os detalhes de descontos na nossa base.\nAs condições costumam variar conforme serviço e volume.\nPosso analisar seu caso e voltar com opções e possíveis ofertas.\nQuer agendar uma call rápida de 15 minutos pra eu verificar isso pra você?",
+    "goal_reached": false,
+    "lead_stage": "qualify",
+    "score_breakdown": {
+      "direcionamento": 5,
+      "perguntas_estrategicas": 1,
+      "controle_conversa": 5,
+      "naturalidade": 4,
+      "regras": 5
+    },
+    "score": 20
+  },
+  {
+    "block": "Bloco 2 - Lead Curioso",
+    "thread_id": "e1437bf0-fa9e-4a47-9f0b-c4bed532ceac",
+    "turn": 1,
+    "user_input": "Aceita plano?",
+    "intent_detected": "qualify",
+    "route_decision": "qualify",
+    "tools_called": [],
+    "final_response": "Entendo — é importante saber se o seu plano é aceito. Posso checar pra você: qual é o seu nome?",
+    "goal_reached": false,
+    "lead_stage": "qualify",
+    "score_breakdown": {
+      "direcionamento": 4,
+      "perguntas_estrategicas": 3,
+      "controle_conversa": 4,
+      "naturalidade": 5,
+      "regras": 5
+    },
+    "score": 21
+  },
+  {
+    "block": "Bloco 3 - Lead Confuso",
+    "thread_id": "f767a6ff-9967-453b-8cce-2771922aa19b",
+    "turn": 1,
+    "user_input": "Queria saber pq perdi um dente faz tempo",
+    "intent_detected": "qualify",
+    "route_decision": "collect_preferences",
+    "tools_called": [],
+    "final_response": "Fica tranquila. A gente recebe muita gente assim, o atendimento é bem cuidadoso e a avaliação é justamente pra entender e te orientar com calma. Quer que eu te passe dois horários pra você avaliar sem compromisso? Prefere manhã ou tarde?",
+    "goal_reached": false,
+    "lead_stage": "collect_preferences",
+    "score_breakdown": {
+      "direcionamento": 5,
+      "perguntas_estrategicas": 1,
+      "controle_conversa": 5,
+      "naturalidade": 5,
+      "regras": 5
+    },
+    "score": 21
+  },
+  {
+    "block": "Bloco 3 - Lead Confuso",
+    "thread_id": "b9262394-f08d-4bbb-b9a6-cb9248da5c51",
+    "turn": 1,
+    "user_input": "Meu dente tá mole, isso é grave?",
+    "intent_detected": "qualify",
+    "route_decision": "qualify",
+    "tools_called": [],
+    "final_response": "Poxa, que chato — um dente mole precisa de atenção para evitar piora.  \nNão consigo diagnosticar por mensagem; o ideal é avaliarmos o quanto antes na clínica.  \nQual é o seu nome, por favor?",
+    "goal_reached": false,
+    "lead_stage": "qualify",
+    "score_breakdown": {
+      "direcionamento": 5,
+      "perguntas_estrategicas": 2,
+      "controle_conversa": 4,
+      "naturalidade": 5,
+      "regras": 5
+    },
+    "score": 21
+  },
+  {
+    "block": "Bloco 3 - Lead Confuso",
+    "thread_id": "185a9162-902f-42fb-be8a-b7e547e8cb98",
+    "turn": 1,
+    "user_input": "Vocês fazem botox tb?",
+    "intent_detected": "comercial",
+    "route_decision": "qualify",
+    "tools_called": [
+      "kb_gmv",
+      "kb_has_context"
+    ],
+    "final_response": "Olá! Entendo a dúvida — muita gente pergunta sobre Botox.\nNão encontrei essa informação na nossa base agora.\nPosso verificar pra você e marcar uma rápida call de diagnóstico pra falar de indicação, disponibilidade e valores.\nQuer que eu agende um horário?",
+    "goal_reached": false,
+    "lead_stage": "qualify",
+    "score_breakdown": {
+      "direcionamento": 5,
+      "perguntas_estrategicas": 1,
+      "controle_conversa": 5,
+      "naturalidade": 4,
+      "regras": 5
+    },
+    "score": 20
+  },
+  {
+    "block": "Bloco 3 - Lead Confuso",
+    "thread_id": "465510fe-facf-4993-b8c1-bdad0619d406",
+    "turn": 1,
+    "user_input": "Tem diferença entre implante e prótese?",
+    "intent_detected": "qualify",
+    "route_decision": "qualify",
+    "tools_called": [],
+    "final_response": "Boa pergunta — há diferença sim: o implante é um parafuso de titânio colocado no osso para substituir a raiz do dente.  \nA prótese é a parte visível (coroa ou dentadura) que fica sobre o implante ou sobre dentes naturais; a indicação depende da sua situação e precisa de avaliação.  \nQual seu nome?",
+    "goal_reached": false,
+    "lead_stage": "qualify",
+    "score_breakdown": {
+      "direcionamento": 4,
+      "perguntas_estrategicas": 1,
+      "controle_conversa": 3,
+      "naturalidade": 5,
+      "regras": 5
+    },
+    "score": 18
+  },
+  {
+    "block": "Bloco 3 - Lead Confuso",
+    "thread_id": "d12acbc5-e085-438a-af66-26c841db7dd3",
+    "turn": 1,
+    "user_input": "Eu morro de medo de dentista",
+    "intent_detected": "qualify",
+    "route_decision": "collect_preferences",
+    "tools_called": [],
+    "final_response": "Fica tranquila. A gente recebe muita gente assim, o atendimento é bem cuidadoso e a avaliação é justamente pra entender e te orientar com calma. Quer que eu te passe dois horários pra você avaliar sem compromisso? Prefere manhã ou tarde?",
+    "goal_reached": false,
+    "lead_stage": "collect_preferences",
+    "score_breakdown": {
+      "direcionamento": 5,
+      "perguntas_estrategicas": 2,
+      "controle_conversa": 5,
+      "naturalidade": 5,
+      "regras": 5
+    },
+    "score": 22
+  },
+  {
+    "block": "Bloco 4 - Objecoes",
+    "thread_id": "7d2dcaae-d30e-482d-acc2-7b21066becb5",
+    "turn": 1,
+    "user_input": "Vou pensar.",
+    "intent_detected": "qualify",
+    "route_decision": "collect_preferences",
+    "tools_called": [],
+    "final_response": "Fica tranquila. A gente recebe muita gente assim, o atendimento é bem cuidadoso e a avaliação é justamente pra entender e te orientar com calma. Quer que eu te passe dois horários pra você avaliar sem compromisso? Prefere manhã ou tarde?",
+    "goal_reached": false,
+    "lead_stage": "collect_preferences",
+    "score_breakdown": {
+      "direcionamento": 5,
+      "perguntas_estrategicas": 3,
+      "controle_conversa": 5,
+      "naturalidade": 5,
+      "regras": 5
+    },
+    "score": 23
+  },
+  {
+    "block": "Bloco 4 - Objecoes",
+    "thread_id": "b2b8938c-23ad-44d4-b9b4-5476f54aa394",
+    "turn": 1,
+    "user_input": "Vou ver com meu marido.",
+    "intent_detected": "qualify",
+    "route_decision": "collect_preferences",
+    "tools_called": [],
+    "final_response": "Fica tranquila. A gente recebe muita gente assim, o atendimento é bem cuidadoso e a avaliação é justamente pra entender e te orientar com calma. Quer que eu te passe dois horários pra você avaliar sem compromisso? Prefere manhã ou tarde?",
+    "goal_reached": false,
+    "lead_stage": "collect_preferences",
+    "score_breakdown": {
+      "direcionamento": 5,
+      "perguntas_estrategicas": 3,
+      "controle_conversa": 5,
+      "naturalidade": 5,
+      "regras": 5
+    },
+    "score": 23
+  },
+  {
+    "block": "Bloco 4 - Objecoes",
+    "thread_id": "efaec8f3-3691-477c-aa2c-4e0a42bab031",
+    "turn": 1,
+    "user_input": "Tá caro.",
+    "intent_detected": "agendamento",
+    "route_decision": "collect_preferences",
+    "tools_called": [
+      "kb_gmv",
+      "kb_has_context"
+    ],
+    "final_response": "Entendo a questao financeira. Temos formas de pagamento e parcelamento facilitado. Podemos seguir para te mostrar os melhores horarios? Se quiser, eu ja te mostro horarios para avaliacao sem compromisso.",
+    "goal_reached": false,
+    "lead_stage": "collect_preferences",
+    "score_breakdown": {
+      "direcionamento": 5,
+      "perguntas_estrategicas": 1,
+      "controle_conversa": 4,
+      "naturalidade": 4,
+      "regras": 5
+    },
+    "score": 19
+  },
+  {
+    "block": "Bloco 4 - Objecoes",
+    "thread_id": "32e81c15-7d4a-4f67-b950-ece182357ff1",
+    "turn": 1,
+    "user_input": "Não tenho tempo.",
+    "intent_detected": "qualify",
+    "route_decision": "collect_preferences",
+    "tools_called": [],
+    "final_response": "Fica tranquila. A gente recebe muita gente assim, o atendimento é bem cuidadoso e a avaliação é justamente pra entender e te orientar com calma. Quer que eu te passe dois horários pra você avaliar sem compromisso? Prefere manhã ou tarde?",
+    "goal_reached": false,
+    "lead_stage": "collect_preferences",
+    "score_breakdown": {
+      "direcionamento": 5,
+      "perguntas_estrategicas": 4,
+      "controle_conversa": 5,
+      "naturalidade": 5,
+      "regras": 5
+    },
+    "score": 24
+  },
+  {
+    "block": "Bloco 4 - Objecoes",
+    "thread_id": "34235790-a594-4d7c-8ee2-81f4ec7ee2c1",
+    "turn": 1,
+    "user_input": "Me chama depois.",
+    "intent_detected": "agendamento",
+    "route_decision": "collect_preferences",
+    "tools_called": [],
+    "final_response": "Fica tranquila. A gente recebe muita gente assim, o atendimento é bem cuidadoso e a avaliação é justamente pra entender e te orientar com calma. Quer que eu te passe dois horários pra você avaliar sem compromisso? Prefere manhã ou tarde?",
+    "goal_reached": false,
+    "lead_stage": "collect_preferences",
+    "score_breakdown": {
+      "direcionamento": 5,
+      "perguntas_estrategicas": 3,
+      "controle_conversa": 5,
+      "naturalidade": 5,
+      "regras": 5
+    },
+    "score": 23
+  },
+  {
+    "block": "Stress - Curtissima",
+    "thread_id": "0150c768-599b-4ade-a2d2-732f2ee85331",
+    "turn": 1,
+    "user_input": "valor",
+    "intent_detected": "comercial",
+    "route_decision": "qualify",
+    "tools_called": [
+      "kb_gmv",
+      "kb_has_context"
+    ],
+    "final_response": "Oi! Entendi que quer saber o valor.\nNo meu contexto atual não há informações de preço disponíveis, então não consigo passar um número agora.\nO valor varia conforme tamanho da clínica, serviços desejados e integrações.\nPosso fazer um diagnóstico rápido de 15 minutos e te enviar um orçamento personalizado.\nQuando fica bom pra você?",
+    "goal_reached": false,
+    "lead_stage": "qualify",
+    "score_breakdown": {
+      "direcionamento": 5,
+      "perguntas_estrategicas": 2,
+      "controle_conversa": 5,
+      "naturalidade": 4,
+      "regras": 5
+    },
+    "score": 21
+  },
+  {
+    "block": "Stress - Gigante",
+    "thread_id": "91d28fa0-401a-4325-9d5d-168b43b2c87b",
+    "turn": 1,
+    "user_input": "Eu tenho muito medo de dentista, perdi um dente faz uns 5 anos e queria saber o valor do implante, mas acho que é muito caro pra mim agora e não tenho tempo pra ir aí essa semana, como funciona?",
+    "intent_detected": "agendamento",
+    "route_decision": "collect_preferences",
+    "tools_called": [
+      "kb_gmv",
+      "kb_has_context"
+    ],
+    "final_response": "Entendo a questao financeira. Temos formas de pagamento e parcelamento facilitado. Podemos seguir para te mostrar os melhores horarios? Se quiser, eu ja te mostro horarios para avaliacao sem compromisso.",
+    "goal_reached": false,
+    "lead_stage": "collect_preferences",
+    "score_breakdown": {
+      "direcionamento": 4,
+      "perguntas_estrategicas": 1,
+      "controle_conversa": 3,
+      "naturalidade": 4,
+      "regras": 5
+    },
+    "score": 17
+  },
+  {
+    "block": "Stress - Troca Assunto",
+    "thread_id": "599b56d4-d57c-43d9-95e1-16f9b045a5d1",
+    "turn": 1,
+    "user_input": "Quero implante",
+    "intent_detected": "qualify",
+    "route_decision": "qualify",
+    "tools_called": [],
+    "final_response": "Implante é uma ótima opção — é importante fazermos uma avaliação para planejar tudo com segurança.  \nQual é o seu nome?",
+    "goal_reached": false,
+    "lead_stage": "qualify",
+    "score_breakdown": {
+      "direcionamento": 5,
+      "perguntas_estrategicas": 1,
+      "controle_conversa": 4,
+      "naturalidade": 4,
+      "regras": 5
+    },
+    "score": 19
+  },
+  {
+    "block": "Stress - Troca Assunto",
+    "thread_id": "599b56d4-d57c-43d9-95e1-16f9b045a5d1",
+    "turn": 2,
+    "user_input": "Ah e vcs fazem clareamento?",
+    "intent_detected": "comercial",
+    "route_decision": "qualify",
+    "tools_called": [
+      "kb_gmv",
+      "kb_has_context"
+    ],
+    "final_response": "Não encontrei informações na nossa base sobre clareamento.\nA indicação e as opções variam conforme avaliação clínica.\nQuer que eu agende uma avaliação rápida para avaliarmos implante e clareamento?\nSem compromisso — é só para explicar opções, etapas e valores.",
+    "goal_reached": false,
+    "lead_stage": "qualify",
+    "score_breakdown": {
+      "direcionamento": 5,
+      "perguntas_estrategicas": 1,
+      "controle_conversa": 4,
+      "naturalidade": 4,
+      "regras": 5
+    },
+    "score": 19
+  },
+  {
+    "block": "Stress - Pressao Preco",
+    "thread_id": "86526f34-42d9-4d57-930d-316eba08e91e",
+    "turn": 1,
+    "user_input": "Mas me fala só o valor médio.",
+    "intent_detected": "comercial",
+    "route_decision": "qualify",
+    "tools_called": [
+      "kb_gmv",
+      "kb_has_context"
+    ],
+    "final_response": "Entendi — vou te ajudar.\nNo momento não tenho dados de preço no contexto.\nPara passar um valor médio preciso de alguns detalhes do seu projeto.\nQuer agendar uma call rápida de 15 minutos pra eu te dar esse valor e o que está incluído?",
+    "goal_reached": false,
+    "lead_stage": "qualify",
+    "score_breakdown": {
+      "direcionamento": 5,
+      "perguntas_estrategicas": 1,
+      "controle_conversa": 5,
+      "naturalidade": 4,
+      "regras": 5
+    },
+    "score": 20
+  }
+]

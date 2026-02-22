@@ -3,12 +3,15 @@ description: Adaptacao do Fluxo N8N SDR para LangGraph
 ---
 
 # Overview
+
 O objetivo é migrar o fluxo atual de atendimento de SDR Odontológico do n8n para uma arquitetura baseada em LangGraph e FastAPI (Python). O fluxo envolve recebimento de webhooks do Chatwoot/Evolution API, transcrição de áudio, gestão de contexto no Supabase, classificação de intenção, IA prestando atendimento (RAG) e IA de agendamentos (Google Calendar), além de processamento assíncrono para qualificação do lead e sincronização com Google Sheets.
 
-# Project Type
-**BACKEND**
+## Project Type
 
-# Tech Stack
+Backend
+
+## Tech Stack
+
 - **Framework Principal:** FastAPI (Roteamento de Webhooks, Endpoints APIRest)
 - **Orquestração de Agentes:** LangGraph (StateGraph, Conditional Edges, Checkpointers para memória)
 - **LLM & Tools:** LangChain / OpenAI API (GPT-4o / GPT-4o-mini / text-embedding-3-small)
@@ -17,8 +20,9 @@ O objetivo é migrar o fluxo atual de atendimento de SDR Odontológico do n8n pa
 - **Integração WhatsApp:** Evolution API
 - **Agendamentos:** Google Calendar API
 
-# File Structure
-```
+## File Structure
+
+```plaintext
 ├── app/
 │   ├── api/
 │   │   ├── routes/
@@ -48,14 +52,15 @@ O objetivo é migrar o fluxo atual de atendimento de SDR Odontológico do n8n pa
 └── requirements.txt
 ```
 
-# Task Breakdown
+## Task Breakdown
 
 ### Fase 1: Setup da Infraestrutura e Casos de Uso Base
+
 - [x] **Task 1: Setup Inicial do FastAPI e Dependências**
   - **Agent:** `backend-specialist`
   - **Input:** Configurar ambiente, `.env`, Supabase Client, Redis Client, LangChain/LangGraph.
   - **Output:** Servidor rodando com dependências instaladas.
-  - **Verify:** Instalar requirements e ligar projeto via `uvicorn`. Endpoint de `/health` respondendo 200 OK. 
+  - **Verify:** Instalar requirements e ligar projeto via `uvicorn`. Endpoint de `/health` respondendo 200 OK.
 
 - [x] **Task 2: Configuração dos Serviços Auxiliares (Redis, Supabase, Evolution)**
   - **Agent:** `backend-specialist`
@@ -64,6 +69,7 @@ O objetivo é migrar o fluxo atual de atendimento de SDR Odontológico do n8n pa
   - **Verify:** Chamar funções em um `__main__` teste para confirmar injeção de dependências e conexão válidas.
 
 ### Fase 2: Configuração do Grafo (LangGraph)
+
 - [x] **Task 3: Definição do StateGraph (state.py)**
   - **Agent:** `backend-specialist`
   - **Input:** Criar dicionário de estado com mensagens, histórico, estado atual do lead, intenção, e output gerado.
@@ -78,7 +84,7 @@ O objetivo é migrar o fluxo atual de atendimento de SDR Odontológico do n8n pa
 
 - [x] **Task 5: Implementação dos Nós Inteligentes (Nodes)**
   - **Agent:** `backend-specialist`
-  - **Input:** 
+  - **Input:**
     1. `classifier_node`: Prompt Recepcionista para identificar intenção com output de schema Pydantic.
     2. `comercial_node`: Agente Athena de Comercial + bind de RAG tools.
     3. `agendamento_node`: Agente de Agenda Athena + bind de Calendar tools.
@@ -93,6 +99,7 @@ O objetivo é migrar o fluxo atual de atendimento de SDR Odontológico do n8n pa
   - **Verify:** Gerar o PNG do grafo chamando `app.get_graph().draw_mermaid_png()`.
 
 ### Fase 3: Integrações de Borda (API & Webhooks)
+
 - [x] **Task 7: Endpoint Webhook de Entrada & Debounce**
   - **Agent:** `backend-specialist`
   - **Input:** Rota `/api/webhook` recebendo dados da Evolution, transcrevendo áudio se necessário (Whisper), aplicando debounce (Redis).
@@ -106,15 +113,19 @@ O objetivo é migrar o fluxo atual de atendimento de SDR Odontológico do n8n pa
   - **Verify:** Verificar se a Google Sheet recebeu a nova linha e confirmar disparo da Evolution de quebra de leitura e resposta digitada.
 
 ### Fase 4: Automação RAG Extra
-- [ ] **Task 9: Sincronização Google Drive -> Supabase Vector**
+
+- [x] **Task 9: Sincronização Google Drive -> Supabase Vector**
   - **Agent:** `backend-specialist`
   - **Input:** Endpoint para receber webhooks do Google Drive de arquivo alterado/novo. Faz parse de texto, split, embed e upsert no `faq_vec` (Supabase).
   - **Output:** Rotina de sync funcional.
   - **Verify:** Executar request de notificação simulando drive e confirmar embeddings salvos no supabase via consulta sql simples.
 
-# Phase X: Verification
+## Phase X: Verification
+
 Após a conclusão de todas as fases os testes devem passar:
-## ✅ PHASE X COMPLETE
+
+### ✅ PHASE X COMPLETE
+
 - Lint: [ ] Pass
 - Security: [ ] No critical issues (security_scan.py)
 - Build/Dev: [ ] Success

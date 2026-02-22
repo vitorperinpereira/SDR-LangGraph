@@ -2,22 +2,58 @@ import pytest
 from langchain_core.messages import HumanMessage
 
 from app.graph import app_graph, collect_preferences, qualify, waiting_choice
-from app.graph.nodes.classifier import IntentClassification, classify_intent
+from app.graph.nodes.classifier import IntentClassification, classify_intent, classifier_node
 from app.graph.tools.calendar import buscar_horarios_disponiveis, criar_evento_agenda
-from app.graph.tools.kb_retriever import kb_gmv
+from app.graph.tools.kb_retriever import _is_valid_uuid, kb_gmv
 
 
 def test_classifier_returns_pydantic_schema() -> None:
     result = classify_intent("Qual o preco do clareamento?")
     assert isinstance(result, IntentClassification)
     assert result.intent == "comercial"
+    assert result.source_label == "informacoes"
     assert 0.0 <= result.confidence <= 1.0
+
+
+def test_classifier_maps_explicit_schedule_to_agendamento() -> None:
+    result = classify_intent("Quero agendar para quinta de manha")
+    assert result.intent == "agendamento"
+    assert result.source_label == "agendamentos"
+
+
+def test_classifier_keeps_ambiguous_message_in_qualify() -> None:
+    result = classify_intent("Oi, tudo bem?")
+    assert result.intent == "qualify"
+    assert result.source_label == "informacoes"
+
+
+def test_classifier_schedule_suggestion_uses_hh_mm(monkeypatch) -> None:
+    class FakeCalendarTool:
+        @staticmethod
+        def invoke(_payload):
+            return [
+                {"start": "2026-02-22T14:00:00", "end": "2026-02-22T15:00:00"},
+                {"start": "2026-02-23T09:30:00", "end": "2026-02-23T10:30:00"},
+            ]
+
+    monkeypatch.setattr("app.graph.tools.calendar.buscar_horarios_disponiveis", FakeCalendarTool())
+
+    result = classifier_node({"messages": [HumanMessage(content="Quero agendar")]})
+    response = result["messages"][-1].content
+    assert "14:00" in response
+    assert "09:30" in response
+    assert "00:00" not in response
 
 
 def test_kb_tool_invocation_returns_text() -> None:
     result = kb_gmv.invoke({"query": "formas de pagamento", "top_k": 2})
     assert isinstance(result, str)
     assert result
+
+
+def test_kb_uuid_validator() -> None:
+    assert _is_valid_uuid("clinic-1") is False
+    assert _is_valid_uuid("95f8f2a3-9ce7-4cd8-b185-b2f9da4a2a53") is True
 
 
 def test_calendar_tools_invocation(monkeypatch) -> None:
@@ -102,3 +138,47 @@ async def test_workflow_routes_comercial_and_agendamento_paths() -> None:
     )
     assert third["stage"] == "done"
     assert "chat_resumo" in third
+
+
+@pytest.mark.asyncio
+async def test_workflow_uses_history_to_finish_qualification() -> None:
+    config = {"configurable": {"thread_id": "phase2-history-qualify"}}
+
+    first = await app_graph.ainvoke(
+        {
+            "messages": [HumanMessage(content="Ola sou o Vitor")],
+            "clinic_id": "clinic-1",
+            "thread_id": "phase2-history-qualify",
+        },
+        config=config,
+    )
+    assert first["stage"] == "qualify"
+
+    second = await app_graph.ainvoke(
+        {"messages": [HumanMessage(content="Vitor, preciso de implantes")]},
+        config=config,
+    )
+    assert second["stage"] == "collect_preferences"
+    assert "manha ou tarde" in second["messages"][-1].content or "reserv" in second["messages"][-1].content.lower() or "hor" in second["messages"][-1].content.lower()
+
+
+@pytest.mark.asyncio
+async def test_workflow_handles_lowercase_name_comma_without_space() -> None:
+    config = {"configurable": {"thread_id": "phase2-history-lowercase-name"}}
+
+    first = await app_graph.ainvoke(
+        {
+            "messages": [HumanMessage(content="ola")],
+            "clinic_id": "clinic-1",
+            "thread_id": "phase2-history-lowercase-name",
+        },
+        config=config,
+    )
+    assert first["stage"] == "qualify"
+
+    second = await app_graph.ainvoke(
+        {"messages": [HumanMessage(content="vitor,implante")]},
+        config=config,
+    )
+    assert second["stage"] == "collect_preferences"
+    assert "manha ou tarde" in second["messages"][-1].content.lower() or "reserv" in second["messages"][-1].content.lower() or "hor" in second["messages"][-1].content.lower()

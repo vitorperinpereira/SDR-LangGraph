@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SDR Agent | Chat Test</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,300..900,100&family=Syne:wght@400;500;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/static/chat.css" />
+</head>
+<body>
+  <div class="ambient-glow ambient-glow-a"></div>
+  <div class="ambient-glow ambient-glow-b"></div>
+
+  <main class="layout">
+    <header class="hero reveal">
+      <p class="hero-tag">SDR Agent / Testing Console</p>
+      <h1>Teste o Agente em Tempo Real</h1>
+      <p class="hero-subtitle">
+        Interface de validacao do fluxo LangGraph, com thread persistente e leitura de estado.
+      </p>
+    </header>
+
+    <section class="console reveal delay-1">
+      <aside class="console-meta">
+        <div class="meta-card">
+          <p class="meta-label">Thread</p>
+          <code id="thread-id"></code>
+          <button id="new-thread" class="ghost-btn" type="button">Nova Conversa</button>
+        </div>
+
+        <div class="meta-card">
+          <p class="meta-label">Estado Atual</p>
+          <div class="badge-list">
+            <span id="badge-stage" class="badge">stage: -</span>
+            <span id="badge-intent" class="badge">intent: -</span>
+            <span id="badge-interesse" class="badge">interesse: -</span>
+            <span id="badge-prompt" class="badge">prompt: -</span>
+          </div>
+        </div>
+
+        <div class="meta-card">
+          <p class="meta-label">Dicas Rapidas</p>
+          <ul class="prompt-list">
+            <li>"Meu nome e Carlos e estou com dor"</li>
+            <li>"Prefiro quinta a tarde"</li>
+            <li>"Escolho a opcao 1"</li>
+            <li>"Qual o valor da consulta?"</li>
+          </ul>
+        </div>
+      </aside>
+
+      <div class="console-chat">
+        <div id="chat-log" class="chat-log" aria-live="polite"></div>
+
+        <form id="chat-form" class="chat-form" data-endpoint="/api/chat/test">
+          <label for="clinic-id" class="inline-label">clinic_id</label>
+          <input id="clinic-id" type="text" placeholder="clinic-1 (opcional)" />
+
+          <label for="chat-input" class="inline-label">mensagem</label>
+          <textarea
+            id="chat-input"
+            rows="3"
+            placeholder="Escreva sua mensagem para o agente..."
+            required
+          ></textarea>
+
+          <button id="send-btn" type="submit" class="send-btn">Enviar</button>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <script src="/static/chat.js"></script>
+</body>
+</html>

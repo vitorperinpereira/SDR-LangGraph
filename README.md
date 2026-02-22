@@ -7,6 +7,7 @@ MVP de agente SDR para clinica odontologica com atendimento via WhatsApp, qualif
 Implementado:
 
 - API FastAPI com `POST /api/webhook` (e rota legada `POST /webhook/evolution`).
+- Interface web para teste manual do agente em `GET /chat` (consumindo `POST /api/chat/test`).
 - Fluxo conversacional com estados (`qualify`, `collect_preferences`, `waiting_choice`, `done`, `objection`).
 - Tratamento de Objeções (preço, medo, distância, etc.) com respostas empáticas.
 - Persistencia de lead, conversa e mensagens no Supabase.
@@ -97,10 +98,14 @@ PROJECT_NAME=SDR Agent Dental
 VERSION=0.1.0
 
 OPENAI_API_KEY=
-OPENAI_MODEL=gpt-4o-mini
+OPENAI_MODEL=gpt-5-mini
+OPENAI_USE_LLM_NODES=true
 OPENAI_AUDIO_MODEL=gpt-4o-mini-transcribe
 OPENAI_API_BASE_URL=https://api.openai.com/v1
 OPENAI_TRANSCRIPTION_TIMEOUT_SECONDS=45
+PROMPT_PROFILE=v5_1
+PROMPT_MAX_HISTORY_MESSAGES=15
+PROMPT_ENABLE_ANTI_REPETITION=true
 
 SUPABASE_URL=
 SUPABASE_SERVICE_ROLE_KEY=
@@ -110,7 +115,9 @@ CLINIC_ID_PILOT=
 
 EVOLUTION_API_URL=
 EVOLUTION_API_KEY=
+EVOLUTION_INSTANCE_ID=
 EVOLUTION_WEBHOOK_SECRET=
+EVOLUTION_PRESENCE_DELAY_MS=1200
 
 GCAL_CREDENTIALS_JSON=credentials.json
 GSHEETS_SPREADSHEET_ID=
@@ -124,15 +131,22 @@ DATABASE_URL=
 |---|---|---|
 | `SUPABASE_URL` | Sim | URL do projeto Supabase |
 | `SUPABASE_SERVICE_ROLE_KEY` | Sim | Chave service role (backend only) |
+| `OPENAI_MODEL` | Opcional | Modelo principal dos nos LLM (default `gpt-5-mini`) |
+| `OPENAI_USE_LLM_NODES` | Opcional | Ativa chamadas LLM nos nos do grafo (default `true`) |
 | `OPENAI_AUDIO_MODEL` | Opcional | Modelo de transcricao de audio (`gpt-4o-mini-transcribe` por padrao) |
 | `OPENAI_API_BASE_URL` | Opcional | Base URL da API OpenAI |
 | `OPENAI_TRANSCRIPTION_TIMEOUT_SECONDS` | Opcional | Timeout da transcricao de audio |
+| `PROMPT_PROFILE` | Opcional | Perfil de prompts versionados (default `v5_1`) |
+| `PROMPT_MAX_HISTORY_MESSAGES` | Opcional | Janela maxima de mensagens no contexto de prompt |
+| `PROMPT_ENABLE_ANTI_REPETITION` | Opcional | Ativa bloqueio basico de repeticao textual nas respostas |
 | `REDIS_URL` | Opcional | URL Redis para debounce distribuido (fallback em memoria se vazio) |
 | `REDIS_DEBOUNCE_TTL_SECONDS` | Opcional | TTL padrao do debounce Redis (segundos) |
 | `CLINIC_ID_PILOT` | Sim | ID da clinica piloto |
 | `EVOLUTION_API_URL` | Sim para envio | Base URL da Evolution API |
 | `EVOLUTION_API_KEY` | Sim para envio | API key Evolution |
+| `EVOLUTION_INSTANCE_ID` | Sim para envio | Nome/ID da instancia na Evolution (ex.: `Athena`) |
 | `EVOLUTION_WEBHOOK_SECRET` | Recomendado | Segredo validado no header `x-webhook-secret` |
+| `EVOLUTION_PRESENCE_DELAY_MS` | Opcional | Delay em ms para endpoint de presence da Evolution |
 | `DATABASE_URL` | Opcional | Ativa tentativa de checkpointer Postgres |
 | `GCAL_CREDENTIALS_JSON` | Opcional | Caminho para JSON da Service Account do Google |
 | `GCAL_CREDENTIALS_B64` | Opcional | Conteudo do JSON da Service Account em Base64 (prioridade sobre arquivo) |
@@ -170,6 +184,10 @@ Observacao:
 ```bash
 uvicorn app.main:app --reload
 ```
+
+Abra no navegador:
+
+- `http://localhost:8000/chat`
 
 Smoke check dos servicos da Fase 1:
 

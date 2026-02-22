@@ -9,10 +9,14 @@ class Settings(BaseSettings):
     
     # OpenAI
     OPENAI_API_KEY: str = ""
-    OPENAI_MODEL: str = "gpt-4o-mini"
+    OPENAI_MODEL: str = "gpt-5-mini"
+    OPENAI_USE_LLM_NODES: bool = True
     OPENAI_AUDIO_MODEL: str = "gpt-4o-mini-transcribe"
     OPENAI_API_BASE_URL: str = "https://api.openai.com/v1"
     OPENAI_TRANSCRIPTION_TIMEOUT_SECONDS: int = 45
+    PROMPT_PROFILE: str = "v5_1"
+    PROMPT_MAX_HISTORY_MESSAGES: int = 15
+    PROMPT_ENABLE_ANTI_REPETITION: bool = True
     
     # Supabase
     SUPABASE_URL: str = ""
@@ -27,14 +31,13 @@ class Settings(BaseSettings):
     GCAL_CREDENTIALS_B64: str = ""
     GCAL_CALENDAR_ID: str = "primary"
     
-    # Google Sheets
-    GSHEETS_SPREADSHEET_ID: str = ""
-    GSHEETS_RANGE: str = "Leads!A:I"
     
     # Evolution API
     EVOLUTION_API_URL: str = ""
     EVOLUTION_API_KEY: str = ""
+    EVOLUTION_INSTANCE_ID: str = ""
     EVOLUTION_WEBHOOK_SECRET: str = ""
+    EVOLUTION_PRESENCE_DELAY_MS: int = 1200
     
     # Business Logic
     CLINIC_ID_PILOT: str = ""

@@ -1,5 +1,6 @@
 /* Enable UUID extension */
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+CREATE EXTENSION IF NOT EXISTS vector;
 
 /* 1. Clinics Table */
 CREATE TABLE IF NOT EXISTS clinics (
@@ -70,6 +71,22 @@ CREATE TABLE IF NOT EXISTS tb_followup (
     created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
+/* 7. FAQ Vector Store (RAG) */
+CREATE TABLE IF NOT EXISTS faq_vec (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    clinic_id UUID REFERENCES clinics(id) ON DELETE CASCADE,
+    source_id TEXT,
+    source_name TEXT,
+    chunk_text TEXT NOT NULL,
+    embedding VECTOR(1536),
+    metadata JSONB DEFAULT '{}',
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS idx_faq_vec_clinic_id ON faq_vec (clinic_id);
+CREATE INDEX IF NOT EXISTS idx_faq_vec_embedding
+    ON faq_vec USING ivfflat (embedding vector_cosine_ops) WITH (lists = 100);
+
 /* LangGraph Checkpoints */
 CREATE TABLE IF NOT EXISTS checkpoints (
     thread_id TEXT NOT NULL,
@@ -108,3 +125,4 @@ ALTER TABLE conversations ENABLE ROW LEVEL SECURITY;
 ALTER TABLE messages ENABLE ROW LEVEL SECURITY;
 ALTER TABLE appointments ENABLE ROW LEVEL SECURITY;
 ALTER TABLE tb_followup ENABLE ROW LEVEL SECURITY;
+ALTER TABLE faq_vec ENABLE ROW LEVEL SECURITY;

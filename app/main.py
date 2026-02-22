@@ -2,13 +2,20 @@ import hashlib
 import logging
 import re
 import time
+from datetime import datetime
+from pathlib import Path
 from threading import Lock
 from typing import Any, Dict, Optional, Tuple
+from uuid import uuid4
 
 import uvicorn
 from fastapi import BackgroundTasks, FastAPI, HTTPException, Request
+from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
 from langchain_core.messages import HumanMessage
+from pydantic import BaseModel, Field
 
+from app.api.routes.knowledge import router as knowledge_router
 from app.config import settings
 from app.db import db_service
 from app.evolution import evolution_service
@@ -16,7 +23,6 @@ from app.gcal import gcal_service
 from app.graph import app_graph
 from app.services.audio_service import audio_service
 from app.services.redis_service import redis_service
-from app.services.sheets_service import sheets_service
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -24,12 +30,34 @@ logger = logging.getLogger(__name__)
 _DEDUP_TTL_SECONDS = 60 * 10
 _seen_provider_events: Dict[str, float] = {}
 _seen_provider_events_lock = Lock()
+_BASE_DIR = Path(__file__).resolve().parent
+_STATIC_DIR = _BASE_DIR / "static"
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
     version=settings.VERSION,
     description="SDR Agent Dental MVP",
 )
+
+if _STATIC_DIR.exists():
+    app.mount("/static", StaticFiles(directory=str(_STATIC_DIR)), name="static")
+
+app.include_router(knowledge_router, prefix="/api/knowledge", tags=["knowledge"])
+
+
+class ChatTestRequest(BaseModel):
+    message: str = Field(min_length=1, max_length=4000)
+    thread_id: Optional[str] = None
+    clinic_id: Optional[str] = None
+
+
+class ChatTestResponse(BaseModel):
+    thread_id: str
+    response: str
+    stage: str
+    intent: str
+    interesse: str
+    prompt_profile: str
 
 
 def _validate_webhook_secret(request: Request) -> bool:
@@ -134,6 +162,17 @@ def _build_debounce_key(
     return f"{prefix}:{digest}"
 
 
+def _format_slot_for_user(slot_start: Optional[str]) -> str:
+    raw = (slot_start or "").strip()
+    if not raw:
+        return "horario combinado"
+    try:
+        parsed = datetime.fromisoformat(raw.replace("Z", "+00:00"))
+        return parsed.strftime("%d/%m as %H:%M")
+    except ValueError:
+        return raw
+
+
 def _extract_response_text(result: Dict[str, Any]) -> str:
     messages = result.get("messages", [])
     if messages:
@@ -174,6 +213,11 @@ async def _run_post_attendance_actions(
     except Exception as exc:
         logger.error("Failed to trigger Evolution read/presence actions: %s", exc)
 
+    import asyncio
+    # Calcula delay natural baseado no tamanho da resposta (max 8s, min 1.5s)
+    delay_seconds = max(1.5, min(8.0, len(ai_response) / 25.0))
+    await asyncio.sleep(delay_seconds)
+
     try:
         await evolution_service.send_message(remote_jid, ai_response)
     except Exception as exc:
@@ -183,12 +227,6 @@ async def _run_post_attendance_actions(
         await db_service.save_followup(**followup_payload)
     except Exception as exc:
         logger.error("Failed to persist follow-up metrics: %s", exc)
-
-    try:
-        if followup_payload.get("interesse") == "muito_interesse":
-            await sheets_service.sync_followup({**followup_payload, "ai_response": ai_response})
-    except Exception as exc:
-        logger.error("Failed to sync follow-up to Google Sheets: %s", exc)
 
 
 async def _resolve_text_from_audio(
@@ -291,8 +329,9 @@ async def _process_evolution_webhook(request: Request, background_tasks: Backgro
             appointment["id"],
             gcal_event.get("id"),
         )
+        slot_label = _format_slot_for_user(selected_slot.get("start"))
         ai_response = (
-            f"Perfeito! Seu agendamento foi confirmado para {selected_slot['start']}."
+            f"Perfeito! Seu agendamento foi confirmado para {slot_label}."
             " Se precisar remarcar, me avise por aqui."
         )
 
@@ -333,6 +372,47 @@ def read_root():
 @app.get("/health")
 def health_check():
     return {"status": "ok"}
+
+
+@app.get("/chat")
+def chat_page():
+    chat_path = _STATIC_DIR / "chat.html"
+    if not chat_path.exists():
+        raise HTTPException(status_code=404, detail="chat interface not found")
+    return FileResponse(chat_path)
+
+
+@app.post("/api/chat/test", response_model=ChatTestResponse)
+async def chat_test(payload: ChatTestRequest):
+    message_text = payload.message.strip()
+    if not message_text:
+        raise HTTPException(status_code=422, detail="message cannot be empty")
+
+    thread_id = (payload.thread_id or "").strip() or str(uuid4())
+    clinic_id = (payload.clinic_id or "").strip() or settings.CLINIC_ID_PILOT or "demo-clinic"
+
+    inputs = {
+        "messages": [HumanMessage(content=message_text)],
+        "clinic_id": clinic_id,
+        "thread_id": thread_id,
+    }
+    config = {"configurable": {"thread_id": thread_id}}
+
+    try:
+        result = await app_graph.ainvoke(inputs, config=config)
+    except Exception as exc:
+        logger.error("Error processing /api/chat/test: %s", exc, exc_info=True)
+        raise HTTPException(status_code=500, detail="chat test failed")
+
+    response_text = _extract_response_text(result) or "Nao consegui responder agora, tente novamente."
+    return ChatTestResponse(
+        thread_id=thread_id,
+        response=response_text,
+        stage=str(result.get("stage") or "qualify"),
+        intent=str(result.get("intent") or "unknown"),
+        interesse=str(result.get("interesse") or "baixo_interesse"),
+        prompt_profile=str(result.get("prompt_profile") or settings.PROMPT_PROFILE),
+    )
 
 
 @app.post("/api/webhook")

@@ -29,7 +29,9 @@ class EvolutionService:
 
     @property
     def instance_id(self) -> str:
-        return self._instance_id if self._instance_id is not None else settings.CLINIC_ID_PILOT
+        if self._instance_id is not None:
+            return self._instance_id
+        return settings.EVOLUTION_INSTANCE_ID or settings.CLINIC_ID_PILOT
 
     @property
     def headers(self) -> Dict[str, str]:
@@ -73,14 +75,22 @@ class EvolutionService:
 
     async def send_presence(self, phone: str, presence: str = "composing") -> Optional[Dict[str, Any]]:
         number = self._normalize_number(phone)
-        payload = {"number": number, "presence": presence}
+        payload = {
+            "number": number,
+            "presence": presence,
+            "delay": max(0, int(settings.EVOLUTION_PRESENCE_DELAY_MS)),
+        }
         return await self._post("chat/sendPresence", payload)
 
     async def mark_as_read(self, phone: str, message_id: Optional[str] = None) -> Optional[Dict[str, Any]]:
         number = self._normalize_number(phone)
-        payload: Dict[str, Any] = {"number": number}
+        remote_jid = f"{number}@s.whatsapp.net"
         if message_id:
-            payload["messageId"] = message_id
+            payload: Dict[str, Any] = {
+                "readMessages": [{"id": message_id, "fromMe": False, "remoteJid": remote_jid}]
+            }
+        else:
+            payload = {"readMessages": [remote_jid]}
         return await self._post("chat/markMessageAsRead", payload)
 
     async def send_message(self, phone: str, message: str) -> Optional[Dict[str, Any]]:
